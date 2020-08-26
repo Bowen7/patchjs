@@ -1,0 +1,29 @@
+{
+  "name": "patchjs",
+  "version": "1.0.0",
+  "description": "a patch for native html",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "node demo/index",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bowen7/patchjs.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Bowen7/patchjs/issues"
+  },
+  "homepage": "https://github.com/Bowen7/patchjs#readme",
+  "devDependencies": {
+    "@rollup/plugin-html": "^0.2.0",
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.8.0",
+    "rollup": "^2.26.5",
+    "rollup-plugin-livereload": "^1.3.0",
+    "rollup-plugin-serve": "^1.0.3",
+    "rollup-plugin-terser": "^7.0.0"
+  }
+}
