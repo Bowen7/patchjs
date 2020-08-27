@@ -4,7 +4,11 @@ class Patch {
     this.__firstRender__ = true
     initRefs(this)
   }
-  render() {
+  // if has no target, the component is child component
+  render(props) {
+    if (!this.target) {
+      return this.options.render(props)
+    }
     callHook(this, "willUpdate", this.__firstRender__)
     this.target.innerHTML = this.options.render()
     callHook(this, "didUpdate", this.__firstRender__)
