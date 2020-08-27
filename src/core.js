@@ -3,9 +3,6 @@ class Patch {
     this.options = initOptions(this, options)
     this.__firstRender__ = true
     initRefs(this)
-    if (this.target) {
-      this.doRender(true)
-    }
   }
   doRender() {
     callHook(this, "willUpdate", this.__firstRender__)
