@@ -18,7 +18,7 @@ class Patch {
   setState(newState) {
     this.__newState__ = {
       ...this.__newState__,
-      newState,
+      ...newState,
     }
     Promise.resolve().then(() => {
       const nextState = {
