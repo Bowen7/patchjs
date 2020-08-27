@@ -21,7 +21,7 @@ class Patch {
       ...this.__newState__,
       newState,
     }
-    Promise.resolve(() => {
+    Promise.resolve().then(() => {
       const nextState = {
         ...this.state,
         ...this.__newState__,
