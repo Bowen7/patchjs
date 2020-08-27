@@ -14,7 +14,6 @@ class Patch {
     this.target.innerHTML = this.options.render()
     callHook(this, "didUpdate", this.__firstRender__)
     this.__firstRender__ = false
-    console.log(this.__firstRender__)
   }
   setState(newState) {
     this.__newState__ = {
