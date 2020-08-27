@@ -2,6 +2,7 @@ class Patch {
   constructor(options = {}) {
     this.options = initOptions(this, options)
     this.__firstRender__ = true
+    this.__newState__ = {}
     initRefs(this)
   }
   // if has no target, the component is child component
@@ -13,22 +14,29 @@ class Patch {
     this.target.innerHTML = this.options.render()
     callHook(this, "didUpdate", this.__firstRender__)
     this.__firstRender__ = false
+    console.log(this.__firstRender__)
   }
   setState(newState) {
-    const nextState = {
-      ...this.state,
-      ...newState,
+    this.__newState__ = {
+      ...this.__newState__,
+      newState,
     }
-    if (this.shouldUpdate) {
-      const shouldUpdate = this.shouldUpdate(nextState)
-      this.state = nextState
-      if (shouldUpdate) {
-        return this.render()
+    Promise.resolve(() => {
+      const nextState = {
+        ...this.state,
+        ...this.__newState__,
       }
-    } else {
-      this.state = nextState
-      this.render()
-    }
+      if (this.shouldUpdate) {
+        const shouldUpdate = this.shouldUpdate(nextState)
+        this.state = nextState
+        if (shouldUpdate) {
+          return this.render()
+        }
+      } else {
+        this.state = nextState
+        this.render()
+      }
+    })
   }
 }
 

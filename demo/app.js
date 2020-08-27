@@ -8,16 +8,13 @@ const com = new Patch({
       count: 0,
     }
   },
-  willMount() {
-    console.log("will mount")
-  },
-  willUpdate() {
-    console.log("will update")
-    this.refs["key"].removeEventListener("click", this.addCount.bind(this))
-  },
-  didRender() {
-    console.log("will render")
-    this.refs["key"].addEventListener("click", this.addCount.bind(this))
+  willUpdate(first) {
+    console.log(11, first)
+    if (first) {
+      this.setState({
+        count: 2,
+      })
+    }
   },
   addCount() {
     this.setState({
@@ -32,3 +29,4 @@ const com = new Patch({
     `
   },
 })
+com.render()
