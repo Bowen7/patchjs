@@ -1,15 +1,17 @@
 class Patch {
   constructor(options = {}) {
     this.options = initOptions(this, options)
+    this.__firstRender__ = true
     initRefs(this)
     if (this.target) {
       this.doRender(true)
     }
   }
-  doRender(firstRender = false) {
-    firstRender ? callHook(this, "willMount") : callHook(this, "willUpdate")
+  doRender() {
+    callHook(this, "willUpdate", this.__firstRender__)
     this.target.innerHTML = this.render()
-    callHook(this, "didRender")
+    callHook(this, "didUpdate", this.__firstRender__)
+    this.__firstRender__ = false
   }
   setState(newState) {
     const nextState = {
@@ -20,11 +22,11 @@ class Patch {
       const shouldUpdate = this.shouldUpdate(nextState)
       this.state = nextState
       if (shouldUpdate) {
-        return this.doRender()
+        return this.render()
       }
     } else {
       this.state = nextState
-      this.doRender()
+      this.render()
     }
   }
 }
@@ -50,6 +52,10 @@ function initOptions(vm, options) {
   Object.keys(options).forEach(propName => {
     Object.defineProperty(vm, propName, {
       get() {
+        // special prop
+        if (propName === "render") {
+          return this.doRender
+        }
         return vm.options[propName]
       },
       set(val) {
@@ -60,8 +66,8 @@ function initOptions(vm, options) {
   return options
 }
 
-function callHook(vm, hook) {
+function callHook(vm, hook, ...rest) {
   const handler = vm.options[hook]
-  handler && handler.call(vm)
+  handler && handler.call(vm, ...rest)
 }
 export default Patch
