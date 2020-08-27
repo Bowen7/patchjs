@@ -4,9 +4,9 @@ class Patch {
     this.__firstRender__ = true
     initRefs(this)
   }
-  doRender() {
+  render() {
     callHook(this, "willUpdate", this.__firstRender__)
-    this.target.innerHTML = this.render()
+    this.target.innerHTML = this.options.render()
     callHook(this, "didUpdate", this.__firstRender__)
     this.__firstRender__ = false
   }
@@ -47,12 +47,11 @@ function initOptions(vm, options) {
   options.state = state
 
   Object.keys(options).forEach(propName => {
+    if (propName === "render") {
+      return
+    }
     Object.defineProperty(vm, propName, {
       get() {
-        // special prop
-        if (propName === "render") {
-          return this.doRender
-        }
         return vm.options[propName]
       },
       set(val) {
